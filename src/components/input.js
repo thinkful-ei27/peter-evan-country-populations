@@ -6,7 +6,7 @@ export default function Input (props)  {
       <form className="App">
         <input
           type="text"
-          placeholder="China, India or United States"
+          placeholder={props.placeholder}
         ></input>
       </form>
     );
