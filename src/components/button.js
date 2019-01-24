@@ -1,7 +1,11 @@
 import React from 'react';
 
-function Button() {
-  return <button>Get Population</button>;
+function Button(props) {
+  return (
+    <button type="submit" onClick={props.log}>
+      Get Population
+    </button>
+  );
 }
 
 export default Button;

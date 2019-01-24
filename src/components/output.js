@@ -1,15 +1,15 @@
 import React from 'react';
 
 function Output(props) {
-  const countryData = props.country.map(country => 
-    <p>
-      Population for {country.country.value} in {country.date}
-    </p>
-  );
+  // const countryData = props.country.map((country, i) => (
+
+  // ));
 
   return (
     <div>
-      {countryData}
+      <p>
+        Population for {props.country} in {props.year} was {props.population}
+      </p>
     </div>
   );
 }
