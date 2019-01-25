@@ -6,7 +6,7 @@ import Button from './components/button';
 import Image from './components/images';
 import China from './assets/flags/china.png';
 import UnitedStates from './assets/flags/united-states.png';
-// import India from './assets/flags/india.png';
+import India from './assets/flags/india.png';
 
 class App extends Component {
   state = {
@@ -18,7 +18,8 @@ class App extends Component {
   handleInput(e) {
     let name = e.target.name;
     this.setState({
-      [name]: e.target.value
+      [name]: e.target.value,
+      renderOutput: false
     });
   }
 
@@ -29,16 +30,42 @@ class App extends Component {
     });
   }
 
-  render() {
-    const population = this.props.countryData.reduce((acc, country) => {
+  getFlag() {
+    switch(this.state.country) {
+      case 'United States': return UnitedStates;
+      case 'China': return China;
+      case 'India': return India;
+      default: return null;
+    };
+  }
+
+  getPopulation () {
+    return this.props.countryData.filter((country) => {
       if (
         this.state.year === country.date &&
         this.state.country === country.country.value
       ) {
-        return country.value;
+        return country;
       }
-    }, []);
-    console.log(population);
+      return null;
+    }, this);
+  }
+
+  render() {
+    // const population = this.props.countryData.reduce((acc, country) => {
+    //   if (
+    //     this.state.year === country.date &&
+    //     this.state.country === country.country.value
+    //   ) {
+    //     return acc;
+    //   }
+    //   return null;
+    // }, []);
+    let population = [];
+    if (this.state.renderOutput) {
+      population = this.getPopulation();
+    }
+    
     return (
       <div className="App">
         <form onSubmit={e => this.handleSubmit(e)}>
@@ -54,14 +81,16 @@ class App extends Component {
           />
           <Button log={() => console.log('button')} />
         </form>
-        <Image imgSrc={UnitedStates} />
-        {this.state.renderOutput ? (
-          <Output
-            country={this.state.country}
-            year={this.state.year}
-            population={population}
-          />
-        ) : null}
+        {population.length > 0 ? (
+          <div>
+            <Image imgSrc={this.getFlag()} />
+            <Output
+              country={this.state.country}
+              year={this.state.year}
+              population={population[0].value}
+            />
+          </div>
+        ) : 'Searching...'}
       </div>
     );
   }
